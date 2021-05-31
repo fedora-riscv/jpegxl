@@ -2,6 +2,15 @@
 
 %global name_dash jpeg-xl
 
+# https://github.com/libjxl/libjxl/issues/63
+# https://github.com/libjxl/libjxl/issues/64
+%global toolchain clang
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1918924
+%ifarch %arm32
+%global _lto_cflags %{nil}
+%endif
+
 %global common_description %{expand:
 This package contains a reference implementation of JPEG XL (encoder and
 decoder). As previously announced, it is available under a royalty-free and open
@@ -10,7 +19,7 @@ source license (Apache 2).}
 Name:           jpegxl
 Version:        0.3.7
 %global commit  9e9bce86164dc4d01c39eeeb3404d6aed85137b2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        JPEG XL image format reference implementation
 
 # Main library: ASL 2.0
@@ -37,7 +46,7 @@ BuildRequires:  asciidoc
 BuildRequires:  cmake
 BuildRequires:  doxygen
 BuildRequires:  extra-cmake-modules
-BuildRequires:  gcc
+BuildRequires:  clang
 BuildRequires:  giflib-devel
 BuildRequires:  gperftools-devel
 BuildRequires:  ninja-build
@@ -175,9 +184,13 @@ rm -v %{buildroot}%{_libdir}/*.a
 %{_libdir}/gimp/2.0/plug-ins/file-jxl/
 
 %changelog
+* Mon May 31 21:07:22 CEST 2021 Robert-André Mauchin <zebob.m@gmail.com> - 0.3.7-2
+- Use Clang instead of GCC due to vector conversion strictness of GCC
+- Disable LTO on arm due to Clang 12.0.0 bug
+- Close: rhbz#1922638
+
 * Mon May 17 20:49:39 CEST 2021 Robert-André Mauchin <zebob.m@gmail.com> - 0.3.7-1
 - Update to 0.3.7
-- Close: rhbz#1922638
 
 * Sat Jan 30 17:10:24 CET 2021 Robert-André Mauchin <zebob.m@gmail.com> - 0.3-1
 - Update to 0.3

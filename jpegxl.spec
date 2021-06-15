@@ -19,7 +19,7 @@ source license (Apache 2).}
 Name:           jpegxl
 Version:        0.3.7
 %global commit  9e9bce86164dc4d01c39eeeb3404d6aed85137b2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        JPEG XL image format reference implementation
 
 # Main library: ASL 2.0
@@ -94,7 +94,6 @@ Documentation for JPEG-XL.
 Summary:        Library files for JPEG-XL
 Requires:       shared-mime-info
 Recommends:     jxl-pixbuf-loader = %{version}-%{release}
-Recommends:     gimp-jxl-plugin   = %{version}-%{release}
 
 %description    libs
 %{common_description}
@@ -184,6 +183,9 @@ rm -v %{buildroot}%{_libdir}/*.a
 %{_libdir}/gimp/2.0/plug-ins/file-jxl/
 
 %changelog
+* Tue Jun 15 2021 Adam Williamson <awilliam@redhat.com> - 0.3.7-3
+- libs: drop Recommends: gimp-jxl-plugin to avoid pulling GIMP into Workstation
+
 * Mon May 31 21:07:22 CEST 2021 Robert-André Mauchin <zebob.m@gmail.com> - 0.3.7-2
 - Use Clang instead of GCC due to vector conversion strictness of GCC
 - Disable LTO on arm due to Clang 12.0.0 bug

@@ -19,7 +19,7 @@ source license (Apache 2).}
 Name:           jpegxl
 Version:        0.3.7
 %global commit  9e9bce86164dc4d01c39eeeb3404d6aed85137b2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        JPEG XL image format reference implementation
 
 # Main library: ASL 2.0
@@ -183,6 +183,9 @@ rm -v %{buildroot}%{_libdir}/*.a
 %{_libdir}/gimp/2.0/plug-ins/file-jxl/
 
 %changelog
+* Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.7-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Tue Jun 15 2021 Adam Williamson <awilliam@redhat.com> - 0.3.7-3
 - libs: drop Recommends: gimp-jxl-plugin to avoid pulling GIMP into Workstation
 

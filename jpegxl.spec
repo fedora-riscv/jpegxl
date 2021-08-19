@@ -1,7 +1,5 @@
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
-%global name_dash jpeg-xl
-
 # https://github.com/libjxl/libjxl/issues/63
 # https://github.com/libjxl/libjxl/issues/64
 %global toolchain clang
@@ -13,33 +11,31 @@
 
 %global common_description %{expand:
 This package contains a reference implementation of JPEG XL (encoder and
-decoder). As previously announced, it is available under a royalty-free and open
-source license (Apache 2).}
+decoder).}
 
 Name:           jpegxl
-Version:        0.3.7
-%global commit  9e9bce86164dc4d01c39eeeb3404d6aed85137b2
+Version:        0.5
 Release:        %autorelease
 Summary:        JPEG XL image format reference implementation
 
-# Main library: ASL 2.0
+# Main library: BSD
 # lodepng: zlib
 # sjpeg: ASL 2.0
 # skcms: BSD
-License:        ASL 2.0 and zlib and BSD
+License:        BSD and ASL 2.0 and zlib
 URL:            https://jpeg.org/jpegxl/
-VCS:            https://gitlab.com/wg1/jpeg-xl
-Source0:        %vcs/-/archive/v%{version}/%{name_dash}-%{version}.tar.bz2
+VCS:            https://github.com/libjxl/libjxl
+Source0:        %vcs/archive/v%{version}/%{name}-%{version}.tar.gz
 
-# git clone https://gitlab.com/wg1/jpeg-xl.git
-# cd jpeg-xl/
+# git clone https://github.com/libjxl/libjxl
+# cd libjxl/
 # git checkout v%%{version}
 # git submodule init ; git submodule update
 # rm -r third_party/brotli/ third_party/difftest_ng/ third_party/googletest/
 # rm -r third_party/HEVCSoftware/ third_party/highway/
 # rm -r third_party/IQA-optimization/ third_party/lcms/
 # rm -r third_party/skcms/profiles/ third_party/vmaf/ third_party/testdata/
-# tar -zcvf third_party-%%{version}.tar.gz third_party/
+# tar -zcvf ../third_party-%%{version}.tar.gz third_party/
 Source1:        third_party-%{version}.tar.gz
 
 BuildRequires:  asciidoc
@@ -73,12 +69,14 @@ Provides:       bundled(skcms) = 0-0.1.20210522git6437475
 %description
 %common_description
 
-%package        utils
-Summary:        JPEG XL image format reference implementation
+%package     -n libjxl-utils
+Summary:        Utilities for manipulating JPEG XL images
 Recommends:     jxl-pixbuf-loader = %{version}-%{release}
 Recommends:     gimp-jxl-plugin   = %{version}-%{release}
+Provides:       jpegxl-utils = %{version}-%{release}
+Obsoletes:      jpegxl-utils < 0.3.7-5
 
-%description utils
+%description -n libjxl-utils
 %{common_description}
 
 %package        doc
@@ -90,21 +88,25 @@ BuildArch:      noarch
 
 Documentation for JPEG-XL.
 
-%package        libs
+%package     -n libjxl
 Summary:        Library files for JPEG-XL
 Requires:       shared-mime-info
 Recommends:     jxl-pixbuf-loader = %{version}-%{release}
+Provides:       jpegxl-libs = %{version}-%{release}
+Obsoletes:      jpegxl-libs < 0.3.7-5
 
-%description    libs
+%description -n libjxl
 %{common_description}
 
 Library files for JPEG-XL.
 
-%package        devel
+%package     -n libjxl-devel
 Summary:        Development files for JPEG-XL
-Requires:       jpegxl-libs%{?_isa} = %{version}-%{release}
+Requires:       libjxl%{?_isa} = %{version}-%{release}
+Provides:       jpegxl-devel = %{version}-%{release}
+Obsoletes:      jpegxl-devel < 0.3.7-5
 
-%description    devel
+%description -n libjxl-devel
 %{common_description}
 
 Development files for JPEG-XL.
@@ -125,9 +127,9 @@ Requires:       gimp
 This is a GIMP plugin for loading and saving JPEG-XL images.
 
 %prep
-%autosetup -p1 -n %{name_dash}-v%{version}-%{commit}
+%autosetup -p1 -n libjxl-%{version}
 rm -rf third_party/
-%setup -q -T -D -a 1 -n %{name_dash}-v%{version}-%{commit}
+%setup -q -T -D -a 1 -n libjxl-%{version}
 
 %build
 %cmake  -DENABLE_CCACHE=1 \
@@ -146,7 +148,7 @@ rm -rf third_party/
 %cmake_install
 rm -v %{buildroot}%{_libdir}/*.a
 
-%files utils
+%files -n libjxl-utils
 %doc CONTRIBUTING.md CONTRIBUTORS README.md
 %{_bindir}/cjxl
 %{_bindir}/djxl
@@ -158,7 +160,7 @@ rm -v %{buildroot}%{_libdir}/*.a
 %doc %{_vpath_builddir}/html
 %license LICENSE
 
-%files libs
+%files -n libjxl
 %license LICENSE
 %{_libdir}/libjxl.so.0*
 %{_libdir}/libjxl_threads.so.0*
@@ -166,7 +168,7 @@ rm -v %{buildroot}%{_libdir}/*.a
 %{_datadir}/thumbnailers/jxl.thumbnailer
 %{_datadir}/mime/packages/image-jxl.xml
 
-%files devel
+%files -n libjxl-devel
 %doc CONTRIBUTING.md
 %{_includedir}/jxl/
 %{_libdir}/libjxl.so

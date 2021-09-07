@@ -48,7 +48,7 @@ BuildRequires:  gperftools-devel
 BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(gimp-2.0)
 BuildRequires:  (pkgconfig(glut) or pkgconfig(freeglut))
-BuildRequires:  pkgconfig(gtest)
+BuildRequires:  gtest-devel
 BuildRequires:  pkgconfig(libhwy)
 BuildRequires:  pkgconfig(libbrotlicommon)
 BuildRequires:  pkgconfig(libjpeg)

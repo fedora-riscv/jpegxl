@@ -1,8 +1,8 @@
 # Uncomment for special build to rebuild aom on bumped soname.
-%global new_soname 1
-%global sover_old 0
-
+#global new_soname 1
+%global sover_old 0.6
 %global sover 0.6
+
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
 # https://github.com/libjxl/libjxl/issues/63

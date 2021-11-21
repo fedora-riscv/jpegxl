@@ -58,7 +58,7 @@ BuildRequires:  pkgconfig(Qt5)
 BuildRequires:  pkgconfig(Qt5X11Extras)
 BuildRequires:  pkgconfig(zlib)
 %if 0%{?new_soname}
-BuildRequires:  jpegxl < %{version}
+BuildRequires:  libjxl < %{version}
 %endif
 
 # Header-only library to be directly included in the project's source tree

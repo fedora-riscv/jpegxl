@@ -1,3 +1,8 @@
+# Uncomment for special build to rebuild aom on bumped soname.
+%global new_soname 1
+%global sover_old 0
+
+%global sover 0.6
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
 # https://github.com/libjxl/libjxl/issues/63
@@ -9,7 +14,7 @@ decoder).}
 
 Name:           jpegxl
 Version:        0.6.1
-Release:        %autorelease
+Release:        %autorelease%{?new_soname:~sonamebump}
 Summary:        JPEG XL image format reference implementation
 
 # Main library: BSD
@@ -52,6 +57,9 @@ BuildRequires:  pkgconfig(OpenEXR)
 BuildRequires:  pkgconfig(Qt5)
 BuildRequires:  pkgconfig(Qt5X11Extras)
 BuildRequires:  pkgconfig(zlib)
+%if 0%{?new_soname}
+BuildRequires:  jpegxl < %{version}
+%endif
 
 # Header-only library to be directly included in the project's source tree
 Provides:       bundled(lodepng) = 0-0.1.20210522git48e5364
@@ -142,6 +150,12 @@ rm -rf third_party/
 %cmake_install
 rm -v %{buildroot}%{_libdir}/*.a
 
+%if 0%{?new_soname}
+cp -p %{_libdir}/libjxl.so.%{sover_old}*     \
+  %{_libdir}/libjxl_threads.so.%{sover_old}* \
+  %{buildroot}%{_libdir}
+%endif
+
 %files -n libjxl-utils
 %doc CONTRIBUTING.md CONTRIBUTORS README.md
 %{_bindir}/cjxl
@@ -156,8 +170,12 @@ rm -v %{buildroot}%{_libdir}/*.a
 
 %files -n libjxl
 %license LICENSE
-%{_libdir}/libjxl.so.0*
-%{_libdir}/libjxl_threads.so.0*
+%{_libdir}/libjxl.so.%{sover}*
+%{_libdir}/libjxl_threads.so.%{sover}*
+%if 0%{?new_soname}
+%{_libdir}/libjxl.so.%{sover_old}*
+%{_libdir}/libjxl_threads.so.%{sover_old}*
+%endif
 %dir %{_datadir}/thumbnailers
 %{_datadir}/thumbnailers/jxl.thumbnailer
 %{_datadir}/mime/packages/image-jxl.xml

@@ -14,7 +14,7 @@ decoder).}
 
 Name:           jpegxl
 Version:        0.6.1
-Release:        %autorelease -b 2 %{?new_soname:-e 0~sonamebump}
+Release:        %autorelease %{?new_soname:-p -e 0~sonamebump}
 Summary:        JPEG XL image format reference implementation
 
 # Main library: BSD

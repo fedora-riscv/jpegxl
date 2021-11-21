@@ -1,20 +1,14 @@
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
 # https://github.com/libjxl/libjxl/issues/63
-# https://github.com/libjxl/libjxl/issues/64
-%global toolchain clang
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1918924
-%ifarch %arm32
-%global _lto_cflags %{nil}
-%endif
+# %%global toolchain clang
 
 %global common_description %{expand:
 This package contains a reference implementation of JPEG XL (encoder and
 decoder).}
 
 Name:           jpegxl
-Version:        0.5
+Version:        0.6.1
 Release:        %autorelease
 Summary:        JPEG XL image format reference implementation
 

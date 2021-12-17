@@ -5,9 +5,6 @@
 
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
-# https://github.com/libjxl/libjxl/issues/63
-# %%global toolchain clang
-
 %global common_description %{expand:
 This package contains a reference implementation of JPEG XL (encoder and
 decoder).}
@@ -41,7 +38,7 @@ BuildRequires:  asciidoc
 BuildRequires:  cmake
 BuildRequires:  doxygen
 BuildRequires:  extra-cmake-modules
-BuildRequires:  clang
+BuildRequires:  gcc-c++
 BuildRequires:  giflib-devel
 BuildRequires:  gperftools-devel
 BuildRequires:  ninja-build

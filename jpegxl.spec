@@ -5,6 +5,11 @@
 
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
+%if 0%{?fedora}
+%bcond_without gimp_plugin
+%bcond_without tcmalloc
+%endif
+
 %global common_description %{expand:
 This package contains a reference implementation of JPEG XL (encoder and
 decoder).}
@@ -40,9 +45,13 @@ BuildRequires:  doxygen
 BuildRequires:  extra-cmake-modules
 BuildRequires:  gcc-c++
 BuildRequires:  giflib-devel
+%if %{with tcmalloc}
 BuildRequires:  gperftools-devel
+%endif
 BuildRequires:  ninja-build
+%if %{with gimp_plugin}
 BuildRequires:  pkgconfig(gimp-2.0)
+%endif
 BuildRequires:  (pkgconfig(glut) or pkgconfig(freeglut))
 BuildRequires:  gtest-devel
 BuildRequires:  pkgconfig(libhwy)
@@ -118,12 +127,14 @@ Requires:       gdk-pixbuf2
 %description -n jxl-pixbuf-loader
 Jxl-pixbuf-loader contains a plugin to load JPEG-XL images in GTK+ applications.
 
+%if %{with gimp_plugin}
 %package     -n gimp-jxl-plugin
 Summary:        A plugin for loading and saving JPEG-XL images
 Requires:       gimp
 
 %description -n gimp-jxl-plugin
 This is a GIMP plugin for loading and saving JPEG-XL images.
+%endif
 
 %prep
 %autosetup -p1 -n libjxl-%{version}
@@ -189,9 +200,11 @@ cp -p %{_libdir}/libjxl.so.%{sover_old}*     \
 %license LICENSE
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-jxl.so
 
+%if %{with gimp_plugin}
 %files -n gimp-jxl-plugin
 %license LICENSE
 %{_libdir}/gimp/2.0/plug-ins/file-jxl/
+%endif
 
 %changelog
 %autochangelog

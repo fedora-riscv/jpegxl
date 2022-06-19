@@ -1,7 +1,11 @@
 # Uncomment for special build to rebuild aom on bumped soname.
-#global new_soname 1
+%global new_soname 1
 %global sover_old 0.6
-%global sover 0.6
+%global sover 0.7
+
+%global commit          c4262565e8de611f593bf2c6f4a24aeb55d38afb
+%global snapshotdate    20220619
+%global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
@@ -15,7 +19,7 @@ This package contains a reference implementation of JPEG XL (encoder and
 decoder).}
 
 Name:           jpegxl
-Version:        0.6.1
+Version:        0.7.0~pre1
 Release:        %autorelease %{?new_soname:-p -e 0~sonamebump}
 Summary:        JPEG XL image format reference implementation
 
@@ -26,18 +30,18 @@ Summary:        JPEG XL image format reference implementation
 License:        BSD and ASL 2.0 and zlib
 URL:            https://jpeg.org/jpegxl/
 VCS:            https://github.com/libjxl/libjxl
-Source0:        %vcs/archive/v%{version}/%{name}-%{version}.tar.gz
+Source0:        %vcs/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 
 # git clone https://github.com/libjxl/libjxl
 # cd libjxl/
-# git checkout v%%{version}
+# git checkout %%{shortcommit}
 # git submodule init ; git submodule update
-# rm -r third_party/brotli/ third_party/difftest_ng/ third_party/googletest/
+# rm -r third_party/brotli/ third_party/googletest/
 # rm -r third_party/HEVCSoftware/ third_party/highway/
-# rm -r third_party/IQA-optimization/ third_party/lcms/
-# rm -r third_party/skcms/profiles/ third_party/vmaf/ third_party/testdata/
-# tar -zcvf ../third_party-%%{version}.tar.gz third_party/
-Source1:        third_party-%{version}.tar.gz
+# rm -r third_party/lcms/ third_party/libpng/ third_party/gflags/
+# rm -r third_party/skcms/profiles/ third_party/zlib
+# tar -zcvf ../third_party-%%{shortcommit}.tar.gz third_party/
+Source1:        third_party-%{shortcommit}.tar.gz
 
 BuildRequires:  asciidoc
 BuildRequires:  cmake
@@ -54,6 +58,7 @@ BuildRequires:  pkgconfig(gimp-2.0)
 %endif
 BuildRequires:  (pkgconfig(glut) or pkgconfig(freeglut))
 BuildRequires:  gtest-devel
+BuildRequires:  pkgconfig(gflags)
 BuildRequires:  pkgconfig(libhwy)
 BuildRequires:  pkgconfig(libbrotlicommon)
 BuildRequires:  pkgconfig(libjpeg)
@@ -67,8 +72,6 @@ BuildRequires:  pkgconfig(zlib)
 BuildRequires:  libjxl < %{version}
 %endif
 
-# Header-only library to be directly included in the project's source tree
-Provides:       bundled(lodepng) = 0-0.1.20210522git48e5364
 # No official release
 Provides:       bundled(sjpeg) = 0-0.1.20210522git868ab55
 # Build system is Bazel, which is not packaged by Fedora
@@ -137,9 +140,9 @@ This is a GIMP plugin for loading and saving JPEG-XL images.
 %endif
 
 %prep
-%autosetup -p1 -n libjxl-%{version}
+%autosetup -p1 -n libjxl-%{commit}
 rm -rf third_party/
-%setup -q -T -D -a 1 -n libjxl-%{version}
+%setup -q -T -D -a 1 -n libjxl-%{commit}
 
 %build
 %cmake  -DENABLE_CCACHE=1 \
@@ -151,7 +154,9 @@ rm -rf third_party/
         -DJPEGXL_FORCE_SYSTEM_GTEST:BOOL=ON \
         -DJPEGXL_FORCE_SYSTEM_HWY:BOOL=ON \
         -DJPEGXL_WARNINGS_AS_ERRORS:BOOL=OFF \
-        -DBUILD_SHARED_LIBS:BOOL=OFF
+        -DBUILD_SHARED_LIBS:BOOL=ON \
+        -DBUNDLE_LIBPNG_DEFAULT:BOOL=OFF \
+        -DBUNDLE_GFLAGS_DEFAULT:BOOL=OFF
 %cmake_build -- all doc
 
 %install
@@ -168,6 +173,10 @@ cp -p %{_libdir}/libjxl.so.%{sover_old}*     \
 %doc CONTRIBUTING.md CONTRIBUTORS README.md
 %{_bindir}/cjxl
 %{_bindir}/djxl
+%{_bindir}/cjpeg_hdr
+%{_bindir}/cjxl_ng
+%{_bindir}/djxl_ng
+%{_bindir}/jxlinfo
 %{_mandir}/man1/cjxl.1*
 %{_mandir}/man1/djxl.1*
 

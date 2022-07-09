@@ -1,5 +1,5 @@
 # Uncomment for special build to rebuild aom on bumped soname.
-%global new_soname 1
+%global new_soname 0
 %global sover_old 0.6
 %global sover 0.7
 

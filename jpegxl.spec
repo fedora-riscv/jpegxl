@@ -1,11 +1,11 @@
 # Uncomment for special build to rebuild aom on bumped soname.
-%global new_soname 0
+# %%global new_soname 0
 %global sover_old 0.6
 %global sover 0.7
 
-%global commit          c4262565e8de611f593bf2c6f4a24aeb55d38afb
-%global snapshotdate    20220619
-%global shortcommit     %(c=%{commit}; echo ${c:0:7})
+# %%global commit          980c90f65f41066cc4959b4eb80eba906867103b
+# %%global snapshotdate    20220918
+# %%global shortcommit     %%(c=%%{commit}; echo ${c:0:7})
 
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
@@ -19,7 +19,8 @@ This package contains a reference implementation of JPEG XL (encoder and
 decoder).}
 
 Name:           jpegxl
-Version:        0.7.0~pre1
+Version:        0.7.0rc
+%global tag     0.7rc
 Release:        %autorelease %{?new_soname:-p -e 0~sonamebump}
 Summary:        JPEG XL image format reference implementation
 
@@ -30,7 +31,7 @@ Summary:        JPEG XL image format reference implementation
 License:        BSD and ASL 2.0 and zlib
 URL:            https://jpeg.org/jpegxl/
 VCS:            https://github.com/libjxl/libjxl
-Source0:        %vcs/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+Source0:        %vcs/archive/v%{tag}/%{name}-%{tag}.tar.gz
 
 # git clone https://github.com/libjxl/libjxl
 # cd libjxl/
@@ -38,10 +39,10 @@ Source0:        %vcs/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 # git submodule init ; git submodule update
 # rm -r third_party/brotli/ third_party/googletest/
 # rm -r third_party/HEVCSoftware/ third_party/highway/
-# rm -r third_party/lcms/ third_party/libpng/ third_party/gflags/
+# rm -r third_party/lcms/ third_party/libpng/
 # rm -r third_party/skcms/profiles/ third_party/zlib
-# tar -zcvf ../third_party-%%{shortcommit}.tar.gz third_party/
-Source1:        third_party-%{shortcommit}.tar.gz
+# tar -zcvf ../third_party-%%{tag}.tar.gz third_party/
+Source1:        third_party-0.7rc.tar.gz
 
 BuildRequires:  asciidoc
 BuildRequires:  cmake
@@ -140,9 +141,9 @@ This is a GIMP plugin for loading and saving JPEG-XL images.
 %endif
 
 %prep
-%autosetup -p1 -n libjxl-%{commit}
+%autosetup -p1 -n libjxl-%{tag}
 rm -rf third_party/
-%setup -q -T -D -a 1 -n libjxl-%{commit}
+%setup -q -T -D -a 1 -n libjxl-%{tag}
 
 %build
 %cmake  -DENABLE_CCACHE=1 \
@@ -174,8 +175,6 @@ cp -p %{_libdir}/libjxl.so.%{sover_old}*     \
 %{_bindir}/cjxl
 %{_bindir}/djxl
 %{_bindir}/cjpeg_hdr
-%{_bindir}/cjxl_ng
-%{_bindir}/djxl_ng
 %{_bindir}/jxlinfo
 %{_mandir}/man1/cjxl.1*
 %{_mandir}/man1/djxl.1*

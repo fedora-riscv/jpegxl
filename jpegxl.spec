@@ -85,7 +85,7 @@ Provides:       bundled(skcms) = 0-0.1.20210522git6437475
 %description
 %common_description
 
-%package     -n libjxl-utilss
+%package     -n libjxl-utils
 Summary:        Utilities for manipulating JPEG XL images
 Recommends:     jxl-pixbuf-loader = %{epoch}:%{version}-%{release}
 Recommends:     gimp-jxl-plugin   = %{epoch}:%{version}-%{release}

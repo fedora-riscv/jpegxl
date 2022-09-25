@@ -85,11 +85,11 @@ Provides:       bundled(skcms) = 0-0.1.20210522git6437475
 %description
 %common_description
 
-%package     -n libjxl-utils
+%package     -n libjxl-utilss
 Summary:        Utilities for manipulating JPEG XL images
-Recommends:     jxl-pixbuf-loader = %{version}-%{release}
-Recommends:     gimp-jxl-plugin   = %{version}-%{release}
-Provides:       jpegxl-utils = %{version}-%{release}
+Recommends:     jxl-pixbuf-loader = %{epoch}:%{version}-%{release}
+Recommends:     gimp-jxl-plugin   = %{epoch}:%{version}-%{release}
+Provides:       jpegxl-utils = %{epoch}:%{version}-%{release}
 Obsoletes:      jpegxl-utils < 0.3.7-5
 
 %description -n libjxl-utils
@@ -97,7 +97,7 @@ Obsoletes:      jpegxl-utils < 0.3.7-5
 
 %package     -n libjxl-devtools
 Summary:        Development tools for JPEG-XL
-Requires:       libjxl%{?_isa} = %{version}-%{release}
+Requires:       libjxl%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description -n libjxl-devtools
 %{common_description}
@@ -118,8 +118,8 @@ Documentation for JPEG-XL.
 %package     -n libjxl
 Summary:        Library files for JPEG-XL
 Requires:       shared-mime-info
-Recommends:     jxl-pixbuf-loader = %{version}-%{release}
-Provides:       jpegxl-libs = %{version}-%{release}
+Recommends:     jxl-pixbuf-loader = %{epoch}:%{version}-%{release}
+Provides:       jpegxl-libs = %{epoch}:%{version}-%{release}
 Obsoletes:      jpegxl-libs < 0.3.7-5
 
 %description -n libjxl
@@ -129,8 +129,8 @@ Library files for JPEG-XL.
 
 %package     -n libjxl-devel
 Summary:        Development files for JPEG-XL
-Requires:       libjxl%{?_isa} = %{version}-%{release}
-Provides:       jpegxl-devel = %{version}-%{release}
+Requires:       libjxl%{?_isa} = %{epoch}:%{version}-%{release}
+Provides:       jpegxl-devel = %{epoch}:%{version}-%{release}
 Obsoletes:      jpegxl-devel < 0.3.7-5
 
 %description -n libjxl-devel

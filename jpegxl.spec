@@ -1,3 +1,7 @@
+# epel 8 need this other already have it
+%undefine __cmake_in_source_build
+
+
 # Uncomment for special build to rebuild aom on bumped soname.
 # %%global new_soname 0
 %global sover_old 0.6
@@ -59,7 +63,7 @@ BuildRequires:  pkgconfig(gimp-2.0)
 %endif
 BuildRequires:  (pkgconfig(glut) or pkgconfig(freeglut))
 BuildRequires:  gtest-devel
-BuildRequires:  pkgconfig(gflags)
+BuildRequires:  gflags-devel
 BuildRequires:  pkgconfig(libhwy)
 BuildRequires:  pkgconfig(libbrotlicommon)
 BuildRequires:  pkgconfig(libjpeg)
@@ -69,6 +73,8 @@ BuildRequires:  pkgconfig(OpenEXR)
 BuildRequires:  pkgconfig(Qt5)
 BuildRequires:  pkgconfig(Qt5X11Extras)
 BuildRequires:  pkgconfig(zlib)
+# epel 8 need this other already have it
+BuildRequires:  python3-devel
 %if 0%{?new_soname}
 BuildRequires:  libjxl < %{version}
 %endif

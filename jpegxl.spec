@@ -3,9 +3,9 @@
 
 
 # Uncomment for special build to rebuild aom on bumped soname.
-# %%global new_soname 0
-%global sover_old 0.6
-%global sover 0.7
+%global new_soname 1
+%global sover_old 0.7
+%global sover 0.8
 
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
@@ -20,7 +20,7 @@ decoder).}
 
 Name:           jpegxl
 Epoch:          1
-Version:        0.7.0
+Version:        0.8.1
 Release:        %autorelease %{?new_soname:-p -e 0~sonamebump}
 Summary:        JPEG XL image format reference implementation
 
@@ -32,10 +32,6 @@ License:        BSD-3-Clause AND Apache-2.0 AND Zlib
 URL:            https://jpeg.org/jpegxl/
 VCS:            https://github.com/libjxl/libjxl
 Source0:        %vcs/archive/v%{version}/%{name}-%{version}.tar.gz
-# exr_to_pq
-Patch0:         https://github.com/libjxl/libjxl/commit/873890998bb151ba54a865cdbd61df22af29774c.patch
-# Ssimulacra 2
-Patch1:         https://github.com/libjxl/libjxl/commit/795b363120bbcfdbb2e2e4fa85146ac6d385137d.patch
 
 # git clone https://github.com/libjxl/libjxl
 # cd libjxl/
@@ -76,7 +72,7 @@ BuildRequires:  pkgconfig(zlib)
 # epel 8 need this other already have it
 BuildRequires:  python3-devel
 %if 0%{?new_soname}
-BuildRequires:  libjxl < %{version}
+BuildRequires:  libjxl < %{epoch}:%{version}
 %endif
 
 # No official release

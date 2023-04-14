@@ -3,10 +3,14 @@
 %global sover_old 0.6
 %global sover 0.7
 
+%bcond_without bootstrap
+
 %global gdk_pixbuf_moduledir $(pkgconf gdk-pixbuf-2.0 --variable=gdk_pixbuf_moduledir)
 
 %if 0%{?fedora}
+%if %{without bootstrap}
 %bcond_without gimp_plugin
+%endif
 %bcond_without tcmalloc
 %endif
 

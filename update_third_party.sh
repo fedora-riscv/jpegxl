@@ -1,4 +1,4 @@
-VERSION=0.8.1
+VERSION=0.8.2
 
 if [ ! -d libjxl ]; then
 git clone https://github.com/libjxl/libjxl

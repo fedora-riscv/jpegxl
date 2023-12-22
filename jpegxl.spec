@@ -21,7 +21,7 @@ decoder).}
 Name:           jpegxl
 Epoch:          1
 Version:        0.8.2
-Release:        %autorelease %{?new_soname:-p -e 0~sonamebump}
+Release:        %{autorelease}.rv64 %{?new_soname:-p -e 0~sonamebump}
 Summary:        JPEG XL image format reference implementation
 
 # Main library: BSD
@@ -35,6 +35,7 @@ Source0:        %vcs/archive/v%{version}/%{name}-%{version}.tar.gz
 
 # set VERSION and run ./update_third_party.sh to get Source1
 Source1:        third_party-%{version}.tar.gz
+Patch0: fix-atomic.patch
 
 BuildRequires:  asciidoc
 BuildRequires:  cmake

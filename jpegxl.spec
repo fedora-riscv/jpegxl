@@ -36,6 +36,10 @@ Source0:        %vcs/archive/v%{version}/%{name}-%{version}.tar.gz
 # set VERSION and run ./update_third_party.sh to get Source1
 Source1:        third_party-%{version}.tar.gz
 
+%ifarch riscv64
+Patch0:         fix-atomic.patch
+%endif
+
 BuildRequires:  asciidoc
 BuildRequires:  cmake
 BuildRequires:  doxygen

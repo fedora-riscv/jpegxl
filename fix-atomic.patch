@@ -1,0 +1,12 @@
+diff --git a/lib/jxl/enc_xyb.cc b/lib/jxl/enc_xyb.cc
+index c731076..796a88a 100644
+--- a/lib/jxl/enc_xyb.cc
++++ b/lib/jxl/enc_xyb.cc
+@@ -7,6 +7,7 @@
+ 
+ #include <algorithm>
+ #include <cstdlib>
++#include <atomic>
+ 
+ #undef HWY_TARGET_INCLUDE
+ #define HWY_TARGET_INCLUDE "lib/jxl/enc_xyb.cc"
